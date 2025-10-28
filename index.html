@@ -1,465 +1,184 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuoteFast - Instant PCB Assembly Quotes</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-      line-height: 1.6;
-      color: #1a1a1a;
-      background: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        color: #1a1a1a; background: #ffffff; line-height: 1.6;
     }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 120px 0 80px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 64px;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 24px;
-      letter-spacing: -0.02em;
-    }
-
-    .hero h1 .highlight {
-      color: #0066ff;
-    }
-
-    .hero p {
-      font-size: 20px;
-      color: #666;
-      max-width: 640px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-    }
-
-    .cta-group {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .hero { padding: 120px 0 80px; text-align: center; }
+    .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.02em; }
+    .hero .highlight { color: #0066ff; }
+    .hero p { font-size: 20px; color: #666; max-width: 640px; margin: 0 auto 40px; }
+    .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .btn {
-      padding: 14px 32px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: none;
-      display: inline-block;
+        padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600;
+        cursor: pointer; border: none; transition: all 0.2s;
     }
+    .btn-primary { background: #0066ff; color: white; }
+    .btn-primary:hover { background: #0052cc; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.3); }
+    .btn-secondary { background: white; color: #666; border: 1px solid #e5e5e5; }
+    .btn-secondary:hover { border-color: #0066ff; color: #0066ff; }
 
-    .btn-primary {
-      background: #0066ff;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #0052cc;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #666;
-      border: 1px solid #e5e5e5;
-    }
-
-    .btn-secondary:hover {
-      border-color: #0066ff;
-      color: #0066ff;
-    }
-
-    /* Trust Indicators */
-    .trust-indicators {
-      display: flex;
-      gap: 40px;
-      justify-content: center;
-      margin-top: 48px;
-      padding: 32px;
-      background: #f8f9fa;
-      border-radius: 12px;
-      flex-wrap: wrap;
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      color: #666;
-    }
-
-    .trust-item::before {
-      content: "✓";
-      color: #10b981;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    /* How It Works Section */
-    .how-it-works {
-      padding: 80px 0;
-      background: #f8f9fa;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-
-    .section-header h2 {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .section-header p {
-      font-size: 18px;
-      color: #666;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
+    /* How it works */
+    .how-it-works { padding: 80px 0; background: #f8f9fa; }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; }
+    .section-header p { font-size: 18px; color: #666; max-width: 600px; margin: 0 auto; }
     .flow-steps {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 32px; margin-top: 48px;
     }
-
     .step-card {
-      flex: 1;
-      min-width: 200px;
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
-      border: 1px solid #e5e5e5;
-      transition: all 0.3s;
-      text-align: center;
+        background: white; padding: 32px; border-radius: 12px; border: 1px solid #e5e5e5;
+        transition: all 0.3s; text-align: left;
     }
-
-    .step-card:hover {
-      border-color: #0066ff;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      transform: translateY(-4px);
-    }
-
+    .step-card:hover { border-color: #0066ff; box-shadow: 0 8px 24px rgba(0,0,0,0.06); transform: translateY(-4px); }
     .step-number {
-      width: 48px;
-      height: 48px;
-      background: #0066ff;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 700;
-      margin: 0 auto 20px;
+        width: 48px; height: 48px; background: #0066ff; color: white; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 20px;
     }
+    .step-card h3 { font-size: 20px; margin-bottom: 12px; color: #1a1a1a; }
+    .step-card p { color: #666; font-size: 15px; line-height: 1.6; }
+    .step-tag { display: inline-block; margin-top: 12px; padding: 4px 12px; background: #e8f4ff; color: #0066ff; border-radius: 4px; font-size: 13px; }
 
-    .step-card h3 {
-      font-size: 20px;
-      margin-bottom: 12px;
-      color: #1a1a1a;
+    /* Features */
+    .features { padding: 80px 0; }
+    .features-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 48px; margin-top: 48px;
     }
-
-    .step-card p {
-      color: #666;
-      font-size: 15px;
-      line-height: 1.6;
+    .feature { text-align: left; }
+    .feature-icon {
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, #0066ff 0%, #00c6ff 100%);
+        border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        font-size: 28px; color: white; margin-bottom: 20px;
     }
-
-    .step-tag {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 12px;
-      background: #e8f4ff;
-      color: #0066ff;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 500;
+    .feature h3 { font-size: 20px; margin-bottom: 12px; font-weight: 700; color: #1a1a1a; }
+    .feature p { color: #666; font-size: 15px; line-height: 1.6; }
+    .badge-group { display: flex; gap: 8px; margin-top: 12px; }
+    .badge {
+        padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;
     }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
 
-    /* Stats Section */
+    /* Stats */
     .stats {
-      padding: 80px 0;
-      background: linear-gradient(135deg, #0066ff 0%, #00c6ff 100%);
-      color: white;
+        padding: 80px 0;
+        background: linear-gradient(135deg, #0066ff 0%, #00c6ff 100%);
+        color: white; text-align: center;
     }
-
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 48px;
-      margin-top: 48px;
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 48px; margin-top: 48px;
     }
+    .stat-item h3 { font-size: 56px; font-weight: 700; margin-bottom: 8px; }
+    .stat-item p { font-size: 16px; opacity: 0.9; }
 
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-item h3 {
-      font-size: 56px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .stat-item p {
-      font-size: 16px;
-      opacity: 0.9;
-    }
-
-    /* CTA Section */
-    .cta-section {
-      padding: 80px 0;
-      text-align: center;
-      background: #f8f9fa;
-    }
-
-    .cta-section h2 {
-      font-size: 48px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-
-    .cta-section p {
-      font-size: 18px;
-      color: #666;
-      margin-bottom: 32px;
-    }
+    /* CTA */
+    .cta-section { padding: 80px 0; text-align: center; background: #f8f9fa; }
+    .cta-section h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; }
+    .cta-section p { font-size: 18px; color: #666; margin-bottom: 32px; }
 
     /* Popup Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    #formModal {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000;
     }
-
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      width: 90%;
-      max-width: 700px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      position: relative;
-      animation: fadeIn 0.3s ease;
+    .form-content {
+        background: #fff; border-radius: 12px; width: 90%; max-width: 800px;
+        padding: 24px; position: relative;
     }
-
     .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #666;
+        position: absolute; top: 10px; right: 16px; font-size: 24px;
+        cursor: pointer; color: #666;
     }
+</style>
 
-    .close-btn:hover {
-      color: #000;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 40px;
-      }
-
-      .hero p {
-        font-size: 18px;
-      }
-
-      .section-header h2 {
-        font-size: 36px;
-      }
-
-      .cta-section h2 {
-        font-size: 36px;
-      }
-
-      .flow-steps {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .step-card {
-        width: 100%;
-        max-width: 400px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Hero Section -->
-  <section class="hero">
+<!-- Hero -->
+<section class="hero">
     <div class="container">
-      <h1>Get your PCB assembly quote <span class="highlight">in minutes, not days</span></h1>
-      <p>Upload your BOM. Get instant parts pricing, assembly cost estimates, and coverage insights—no back-and-forth emails required.</p>
-
-      <div class="cta-group">
-        <button onclick="openForm()" class="btn btn-primary">Upload BOM & Get Quote</button>
-        <a href="#how-it-works" class="btn btn-secondary">See how it works ↓</a>
-      </div>
-
-      <div class="trust-indicators">
-        <div class="trust-item">Live pricing</div>
-        <div class="trust-item">Real-time inventory</div>
-        <div class="trust-item">PDF in minutes</div>
-      </div>
+        <h1>Get your PCB assembly quote <span class="highlight">in minutes, not days</span></h1>
+        <p>Upload your BOM. Get instant parts pricing, assembly cost estimates, and coverage insights—no back-and-forth emails required.</p>
+        <div class="cta-group">
+            <button onclick="openForm()" class="btn btn-primary">Upload BOM & Get Quote</button>
+            <a href="#how-it-works" class="btn btn-secondary">See how it works ↓</a>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- How It Works Section -->
-  <section class="how-it-works" id="how-it-works">
+<!-- How It Works -->
+<section class="how-it-works" id="how-it-works">
     <div class="container">
-      <div class="section-header">
-        <h2>How it works</h2>
-        <p>Five simple steps from BOM upload to production-ready quote</p>
-      </div>
-
-      <div class="flow-steps">
-        <div class="step-card">
-          <div class="step-number">1</div>
-          <h3>Upload BOM</h3>
-          <p>Drop your CSV or Excel file. We auto-detect columns instantly.</p>
-          <span class="step-tag">Auto-mapping</span>
+        <div class="section-header">
+            <h2>How it works</h2>
+            <p>Five simple steps from BOM upload to production-ready quote</p>
         </div>
-
-        <div class="step-card">
-          <div class="step-number">2</div>
-          <h3>Parts Pricing</h3>
-          <p>Live distributor pricing with real-time availability checks.</p>
-          <span class="step-tag">20+ distributors</span>
+        <div class="flow-steps">
+            <div class="step-card"><div class="step-number">1</div><h3>Upload BOM</h3><p>Drop your CSV or Excel file. We auto-detect columns instantly.</p><span class="step-tag">Auto-mapping</span></div>
+            <div class="step-card"><div class="step-number">2</div><h3>Parts Pricing</h3><p>Live distributor pricing with real-time availability checks.</p><span class="step-tag">20+ distributors</span></div>
+            <div class="step-card"><div class="step-number">3</div><h3>Assembly Config</h3><p>Auto-calculated SMT/THT costs based on your component counts.</p><span class="step-tag">Instant estimates</span></div>
+            <div class="step-card"><div class="step-number">4</div><h3>Review Quote</h3><p>Firm pricing breakdown with sensitivity ranges and lead times.</p><span class="step-tag">Transparent</span></div>
+            <div class="step-card"><div class="step-number">5</div><h3>Download PDF</h3><p>Get your quote instantly via email and reserve your production slot.</p><span class="step-tag">Instant delivery</span></div>
         </div>
-
-        <div class="step-card">
-          <div class="step-number">3</div>
-          <h3>Assembly Config</h3>
-          <p>Auto-calculated SMT/THT costs based on your component counts.</p>
-          <span class="step-tag">Instant estimates</span>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">4</div>
-          <h3>Review Quote</h3>
-          <p>Firm pricing breakdown with sensitivity ranges and lead times.</p>
-          <span class="step-tag">Transparent</span>
-        </div>
-
-        <div class="step-card">
-          <div class="step-number">5</div>
-          <h3>Download PDF</h3>
-          <p>Get your quote instantly via email and reserve your production slot.</p>
-          <span class="step-tag">Instant delivery</span>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- Stats Section -->
-  <section class="stats">
+<!-- Features -->
+<section class="features" id="features">
     <div class="container">
-      <div class="section-header">
-        <h2 style="color: white;">Trusted by electronics teams</h2>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-item">
-          <h3>&lt; 5min</h3>
-          <p>Average quote time</p>
+        <div class="section-header">
+            <h2>Built for speed and accuracy</h2>
+            <p>Everything you need for transparent, production-ready electronics quotes</p>
         </div>
-        <div class="stat-item">
-          <h3>95%+</h3>
-          <p>Parts coverage rate</p>
+        <div class="features-grid">
+            <div class="feature"><div class="feature-icon">✓</div><h3>Smart Coverage Analysis</h3><p>Visual breakdown of priced, alternate, and manual-quote parts with real-time inventory data.</p><div class="badge-group"><span class="badge badge-green">Priced</span><span class="badge badge-amber">Alternate</span><span class="badge badge-red">Manual</span></div></div>
+            <div class="feature"><div class="feature-icon">⚡</div><h3>Lightning-Fast Parsing</h3><p>Auto-detect BOM columns, validate data, and start pricing in seconds—no manual mapping required.</p></div>
+            <div class="feature"><div class="feature-icon">📊</div><h3>Assembly Cost Automation</h3><p>Instant SMT/THT placement costs, stencil setup, and testing estimates based on component counts.</p></div>
+            <div class="feature"><div class="feature-icon">💰</div><h3>Sensitivity Ranges</h3><p>Transparent ±5% pricing bands to account for sourcing variations and final PCB cost adjustments.</p></div>
+            <div class="feature"><div class="feature-icon">📄</div><h3>PDF Delivery</h3><p>Professional quote documents sent to your inbox instantly—ready to share with your team or stakeholders.</p></div>
+            <div class="feature"><div class="feature-icon">🔒</div><h3>Slot Reservation</h3><p>Lock in your production timeline and lead times directly from the quote interface—no phone calls needed.</p></div>
         </div>
-        <div class="stat-item">
-          <h3>24/7</h3>
-          <p>Instant access</p>
-        </div>
-        <div class="stat-item">
-          <h3>500+</h3>
-          <p>Electronics teams</p>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
+<!-- Stats -->
+<section class="stats">
     <div class="container">
-      <h2>Ready to speed up your quoting process?</h2>
-      <p>Join hundreds of electronics teams getting quotes in minutes instead of days.</p>
-      <button onclick="openForm()" class="btn btn-primary">Upload BOM & Get Started</button>
+        <div class="section-header"><h2>Trusted by electronics teams</h2></div>
+        <div class="stats-grid">
+            <div class="stat-item"><h3>&lt; 5min</h3><p>Average quote time</p></div>
+            <div class="stat-item"><h3>95%+</h3><p>Parts coverage rate</p></div>
+            <div class="stat-item"><h3>24/7</h3><p>Instant access</p></div>
+            <div class="stat-item"><h3>500+</h3><p>Electronics teams</p></div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- Modal Popup -->
-  <div class="modal-overlay" id="formModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeForm()">&times;</span>
-      <iframe aria-label='Upload BOM and Get Quote' frameborder="0" style="height:500px;width:100%;border:none;"
-        src='https://forms.zohopublic.com/summonelectronics/form/CustomerSatisfactionForm/formperma/VXlhO_SNgzc20I4aVQ1uG7CUFy9av4VRNV3mKyJh3FI'>
-      </iframe>
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to speed up your quoting process?</h2>
+        <p>Join hundreds of electronics teams getting quotes in minutes instead of days.</p>
+        <button onclick="openForm()" class="btn btn-primary">Upload BOM & Get Started</button>
     </div>
-  </div>
+</section>
 
-  <script>
-    function openForm() {
-      document.getElementById('formModal').style.display = 'flex';
-    }
-    function closeForm() {
-      document.getElementById('formModal').style.display = 'none';
-    }
-    // Close modal when clicking outside
-    window.addEventListener('click', function(e) {
-      const modal = document.getElementById('formModal');
-      if (e.target === modal) closeForm();
-    });
-  </script>
-</body>
-</html>
+<!-- Popup Zoho Form -->
+<div id="formModal">
+    <div class="form-content">
+        <span class="close-btn" onclick="closeForm()">×</span>
+        <iframe aria-label='Upload BOM and Get Quote' frameborder="0" style="height:500px;width:100%;border:none;border-radius:8px;" src='https://forms.zohopublic.com/summonelectronics/form/CustomerSatisfactionForm/formperma/VXlhO_SNgzc20I4aVQ1uG7CUFy9av4VRNV3mKyJh3FI'></iframe>
+    </div>
+</div>
+
+<script>
+function openForm() {
+    document.getElementById('formModal').style.display = 'flex';
+}
+function closeForm() {
+    document.getElementById('formModal').style.display = 'none';
+}
+</script>
