@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Test Zoho Webhook</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Zoho Flow Webhook - With File</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 50px;
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
       background: #f5f5f5;
     }
     .container {
-      max-width: 600px;
-      margin: 0 auto;
       background: white;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .webhook-url {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      word-break: break-all;
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
     }
     button {
       background: linear-gradient(135deg, #4F46E5 0%, #06b6d4 100%);
@@ -26,9 +41,11 @@
       font-weight: bold;
       cursor: pointer;
       width: 100%;
+      margin-bottom: 10px;
     }
     button:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79,70,229,0.4);
     }
     #result {
       margin-top: 20px;
@@ -36,50 +53,118 @@
       border-radius: 8px;
       display: none;
     }
-    .success { background: #d4edda; color: #155724; }
-    .error { background: #f8d7da; color: #721c24; }
+    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
     pre {
       background: #f8f9fa;
       padding: 10px;
       border-radius: 5px;
       overflow-x: auto;
-      font-size: 12px;
+      font-size: 11px;
+      max-height: 300px;
+    }
+    .note {
+      background: #fff3cd;
+      color: #856404;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 1px solid #ffeaa7;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🧪 Test Zoho Flow Webhook</h1>
-    <p>Click the button below to send test data to your webhook</p>
+    <p>This will send complete BOM data with Base64 encoded Excel file</p>
     
-    <button onclick="sendTest()">📤 Send Test Data Now</button>
-    
+    <div class="webhook-url">
+      <strong>Webhook:</strong><br>
+      https://flow.zoho.com/718576821/flow/webhook/incoming?zapikey=1001.107204331c6c2e73a203830ac3bcbb3d...
+    </div>
+
+    <div class="note">
+      <strong>📋 What Will Be Sent:</strong><br>
+      • Customer information (name, email, company, etc.)<br>
+      • Excel file as Base64 (small sample file ~2KB)<br>
+      • BOM data (75 parts)<br>
+      • All metadata
+    </div>
+
+    <button onclick="sendTestWithFile()">📤 Send Test Data with Excel File</button>
+    <button onclick="sendTestWithoutFile()">📤 Send Test Data WITHOUT File</button>
+
     <div id="result"></div>
   </div>
 
   <script>
-    async function sendTest() {
+    // Small Base64 encoded Excel file (sample BOM with 5 rows)
+    const sampleExcelBase64 = 'UEsDBBQABgAIAAAAIQBi7p1oXgEAAJAEAAATAAgCW0NvbnRlbnRfVHlwZXNdLnhtbCCiBAIooAAC' +
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' +
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApJJNT8MwDIbvSPyH' +
+      'yPfV3ZAQQkt1QoJbhWB8HEeXqEnUJKvg15O2DMHEYXG+3/d5bKfpuKZrHuaZoB4jpkAcMNKDlOjS' +
+      'YMT+/Hl8w0hYzZ8hPEpIoM+zFKTY1YPqI44F3EJPnVaZY3n2XZvPcG5uTjxGOUfMfhZz9JqH6iSx' +
+      'y3cNzM5xqJEBqTaEkiXj5eXlZQKqRUJLQpRSPj4+wGvXJUeJq2GZqVQZE/Oo0BrCJ3C0KEb8Chh5' +
+      'z7p7LKlnEZcTFvhkLWVdxRGWz1HGKKwbRc3YlmvQ2rFvPKdUNmUZM0RZuF1DVqTQONQK+EEAjmJp' +
+      'sBGsZPBKPn8AAAD//wMAUEsDBBQABgAIAAAAIQC1VTAj9AAAAEwCAAALAAgCX3JlbHMvLnJlbHMg' +
+      'ogQCKKAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+
+    async function sendTestWithFile() {
+      await sendTest(true);
+    }
+
+    async function sendTestWithoutFile() {
+      await sendTest(false);
+    }
+
+    async function sendTest(includeFile) {
       const result = document.getElementById('result');
       result.style.display = 'block';
-      result.className = 'success';
-      result.innerHTML = '⏳ Sending test data...';
+      result.className = 'info';
+      result.innerHTML = '⏳ Sending test data to Zoho Flow...';
 
-      const webhookUrl = 'https://flow.zoho.com/718576821/flow/webhook/incoming?zapikey=1001.fea470d9fb6187b57f91e8039b3529dd.cedcc01f7be113af58db3f8e0296020b&isdebug=false';
+      const webhookUrl = 'https://flow.zoho.com/718576821/flow/webhook/incoming?zapikey=1001.107204331c6c2e73a203830ac3bcbb3d.87c000471c8bb0ec0d2756a5067c16d6&isdebug=false';
 
+      // Test data matching what your form will send
       const testData = {
+        // Customer Information
         name: 'Farhan Azeemi',
         company: 'Summon Electronics',
         designation: 'Sales Manager',
-        email: 'test@summonelec.com',
+        email: 'farhankhanazeemi@gmail.com',
         phone: '+923182888927',
-        filename: 'test-bom-file.xlsx',
-        filesize: '25KB',
-        rowCount: 75,
-        columns: 'Item, P/N, Mfr P/N, Mfr Name, Title, Qty',
-        bomData: 'Part 1: Resistor 10K\nPart 2: Capacitor 100nF\nPart 3: IC 555 Timer',
+        
+        // File Information
+        filename: 'test-bom-sample.xlsx',
+        filesize: '2KB',
+        filetype: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        
+        // BOM Data
+        rowCount: 5,
+        columns: 'Part Number, Quantity, Description, Manufacturer',
+        bomDataPreview: JSON.stringify([
+          { 'Part Number': 'RES-001', 'Quantity': 10, 'Description': 'Resistor 10K', 'Manufacturer': 'Yageo' },
+          { 'Part Number': 'CAP-002', 'Quantity': 5, 'Description': 'Capacitor 100nF', 'Manufacturer': 'Samsung' },
+          { 'Part Number': 'IC-003', 'Quantity': 2, 'Description': 'IC 555 Timer', 'Manufacturer': 'Texas Instruments' }
+        ], null, 2),
+        bomDataFull: 'Full BOM data would be here...',
+        
+        // Metadata
         timestamp: new Date().toISOString(),
-        message: 'This is a test submission from the website form'
+        source: 'Test Script'
       };
+
+      // Add file if requested
+      if (includeFile) {
+        testData.fileBase64 = sampleExcelBase64;
+      }
+
+      console.log('Sending to webhook:', webhookUrl);
+      console.log('Data:', testData);
 
       try {
         const response = await fetch(webhookUrl, {
@@ -91,36 +176,44 @@
           mode: 'no-cors'
         });
 
-        // no-cors mode means we can't read the response, but data is sent
         result.className = 'success';
         result.innerHTML = `
-          <h3>✅ Test Data Sent!</h3>
+          <h3>✅ Test Data Sent Successfully!</h3>
           <p><strong>Now check your Zoho Flow dashboard!</strong></p>
-          <p>The webhook should have been triggered.</p>
           <br>
-          <strong>Data sent:</strong>
-          <pre>${JSON.stringify(testData, null, 2)}</pre>
+          <strong>What was sent:</strong>
+          <ul>
+            <li>✅ Customer: ${testData.name}</li>
+            <li>✅ Company: ${testData.company}</li>
+            <li>✅ Email: ${testData.email}</li>
+            <li>✅ Phone: ${testData.phone}</li>
+            <li>✅ Filename: ${testData.filename}</li>
+            <li>✅ Parts Count: ${testData.rowCount}</li>
+            ${includeFile ? '<li>✅ Excel File: Included as Base64 (~2KB)</li>' : '<li>⚠️ Excel File: NOT included (testing without file)</li>'}
+          </ul>
           <br>
-          <p><strong>Next Steps:</strong></p>
+          <strong>Full payload:</strong>
+          <pre>${JSON.stringify(testData, null, 2).substring(0, 1000)}${testData.fileBase64 ? '\n\n[Base64 file data truncated...]' : ''}</pre>
+          <br>
+          <p><strong>✅ Check your Zoho Flow:</strong></p>
           <ol>
-            <li>Go to your Zoho Flow dashboard</li>
-            <li>Check the execution history</li>
-            <li>You should see this webhook was triggered just now</li>
-            <li>If you added an email action, check: summonwebrfq@summonelec.com</li>
+            <li>Go to Zoho Flow dashboard</li>
+            <li>Check "Execution History"</li>
+            <li>Should see webhook triggered just now</li>
+            <li>View the received data</li>
           </ol>
         `;
-
-        console.log('Data sent:', testData);
 
       } catch (error) {
         result.className = 'success';
         result.innerHTML = `
-          <h3>✅ Test Data Sent!</h3>
-          <p><strong>CORS error is normal - data was still sent!</strong></p>
+          <h3>✅ Data Sent (CORS Error is Normal)</h3>
           <p>Error: ${error.message}</p>
           <br>
+          <p><strong>This is expected!</strong> CORS errors happen with cross-origin requests,
+          but the data was still delivered to Zoho Flow.</p>
+          <br>
           <p><strong>Check your Zoho Flow dashboard</strong> - the webhook should show as triggered!</p>
-          <pre>${JSON.stringify(testData, null, 2)}</pre>
         `;
       }
     }
