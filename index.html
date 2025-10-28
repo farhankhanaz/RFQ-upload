@@ -1,141 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Simple Webhook Test</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-    }
-    button {
-      background: #4F46E5;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      margin: 10px 0;
-      width: 100%;
-    }
-    button:hover { background: #3730a3; }
-    #output {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteFast - Instant PCB Assembly Quotes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            color: #0066ff;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #666;
+            max-width: 640px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #0066ff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0052cc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 1px solid #e5e5e5;
+        }
+
+        .btn-secondary:hover {
+            border-color: #0066ff;
+            color: #0066ff;
+        }
+
+        /* Trust Indicators */
+        .trust-indicators {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 48px;
+            padding: 32px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #666;
+        }
+
+        .trust-item::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .step-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e5;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            border-color: #0066ff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: #0066ff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .step-card p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .step-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 12px;
+            background: #e8f4ff;
+            color: #0066ff;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        .feature {
+            text-align: left;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #0066ff 0%, #00c6ff 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-amber {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #0066ff 0%, #00c6ff 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-item p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .cta-section h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            background: #ffffff;
+            border-top: 1px solid #e5e5e5;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-header h2 {
+                font-size: 36px;
+            }
+
+            .cta-section h2 {
+                font-size: 36px;
+            }
+
+            .trust-indicators {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>🧪 Simple Webhook Test</h1>
-  
-  <p><strong>Webhook URL:</strong><br>
-  <small>https://flow.zoho.com/718576821/flow/webhook/incoming?zapikey=1001.107204331c6c2e73a203830ac3bcbb3d...</small></p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Get your PCB assembly quote <span class="highlight">in minutes, not days</span></h1>
+            <p>Upload your BOM. Get instant parts pricing, assembly cost estimates, and coverage insights—no back-and-forth emails required.</p>
+            
+            <div class="cta-group">
+                <button onclick="openZohoForm()" class="btn btn-primary">Upload BOM & Get Quote</button>
+                <a href="#how-it-works" class="btn btn-secondary">See how it works ↓</a>
+            </div>
 
-  <button onclick="test1()">Test 1: Minimal Data (no CORS)</button>
-  <button onclick="test2()">Test 2: With mode: 'cors'</button>
-  <button onclick="test3()">Test 3: With no-cors (old way)</button>
+            <div class="trust-indicators">
+                <div class="trust-item">Live pricing</div>
+                <div class="trust-item">Real-time inventory</div>
+                <div class="trust-item">PDF in minutes</div>
+            </div>
+        </div>
+    </section>
 
-  <div id="output"></div>
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How it works</h2>
+                <p>Five simple steps from BOM upload to production-ready quote</p>
+            </div>
 
-  <script>
-    const webhookUrl = 'https://flow.zoho.com/718576821/flow/webhook/incoming?zapikey=1001.107204331c6c2e73a203830ac3bcbb3d.87c000471c8bb0ec0d2756a5067c16d6&isdebug=false';
-    const output = document.getElementById('output');
+            <div class="flow-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Upload BOM</h3>
+                    <p>Drop your CSV or Excel file. We auto-detect columns instantly.</p>
+                    <span class="step-tag">Auto-mapping</span>
+                </div>
 
-    async function test1() {
-      output.textContent = 'Test 1: Sending minimal data without mode setting...\n';
-      
-      const data = {
-        test: 'test1',
-        name: 'Farhan',
-        email: 'test@example.com',
-        timestamp: new Date().toISOString()
-      };
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Parts Pricing</h3>
+                    <p>Live distributor pricing with real-time availability checks.</p>
+                    <span class="step-tag">20+ distributors</span>
+                </div>
 
-      try {
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Assembly Config</h3>
+                    <p>Auto-calculated SMT/THT costs based on your component counts.</p>
+                    <span class="step-tag">Instant estimates</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Review Quote</h3>
+                    <p>Firm pricing breakdown with sensitivity ranges and lead times.</p>
+                    <span class="step-tag">Transparent</span>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">5</div>
+                    <h3>Download PDF</h3>
+                    <p>Get your quote instantly via email and reserve your production slot.</p>
+                    <span class="step-tag">Instant delivery</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for speed and accuracy</h2>
+                <p>Everything you need for transparent, production-ready electronics quotes</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <h3>Smart Coverage Analysis</h3>
+                    <p>Visual breakdown of priced, alternate, and manual-quote parts with real-time inventory data.</p>
+                    <div class="badge-group">
+                        <span class="badge badge-green">Priced</span>
+                        <span class="badge badge-amber">Alternate</span>
+                        <span class="badge badge-red">Manual</span>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning-Fast Parsing</h3>
+                    <p>Auto-detect BOM columns, validate data, and start pricing in seconds—no manual mapping required.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Assembly Cost Automation</h3>
+                    <p>Instant SMT/THT placement costs, stencil setup, and testing estimates based on component counts.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>Sensitivity Ranges</h3>
+                    <p>Transparent ±5% pricing bands to account for sourcing variations and final PCB cost adjustments.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">📄</div>
+                    <h3>PDF Delivery</h3>
+                    <p>Professional quote documents sent to your inbox instantly—ready to share with your team or stakeholders.</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Slot Reservation</h3>
+                    <p>Lock in your production timeline and lead times directly from the quote interface—no phone calls needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: white;">Trusted by electronics teams</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>&lt; 5min</h3>
+                    <p>Average quote time</p>
+                </div>
+                <div class="stat-item">
+                    <h3>95%+</h3>
+                    <p>Parts coverage rate</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Instant access</p>
+                </div>
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Electronics teams</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to speed up your quoting process?</h2>
+            <p>Join hundreds of electronics teams getting quotes in minutes instead of days.</p>
+            <button onclick="openZohoForm()" class="btn btn-primary">Upload BOM & Get Started</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 QuoteFast. Built for electronics manufacturing teams.</p>
+            <p style="margin-top: 8px;">Questions? Email us at hello@quotefast.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Open Zoho Form in new tab
+        function openZohoForm() {
+            window.open('https://zfrmz.com/KzITthXDvg74G15Eihyg', '_blank');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
-
-        output.textContent += `✓ Request sent\n`;
-        output.textContent += `Response status: ${response.status}\n`;
-        output.textContent += `Response OK: ${response.ok}\n`;
-        output.textContent += `\nData sent:\n${JSON.stringify(data, null, 2)}\n`;
-        output.textContent += `\nCheck Zoho Flow now!`;
-      } catch (error) {
-        output.textContent += `Error: ${error.message}\n`;
-        output.textContent += `\nThis might be CORS, but check Zoho Flow anyway!`;
-      }
-    }
-
-    async function test2() {
-      output.textContent = 'Test 2: Sending with mode: cors...\n';
-      
-      const data = {
-        test: 'test2',
-        name: 'Farhan',
-        email: 'test@example.com',
-        timestamp: new Date().toISOString()
-      };
-
-      try {
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        });
-
-        output.textContent += `✓ Request sent\n`;
-        output.textContent += `Response status: ${response.status}\n`;
-        output.textContent += `\nData sent:\n${JSON.stringify(data, null, 2)}\n`;
-        output.textContent += `\nCheck Zoho Flow now!`;
-      } catch (error) {
-        output.textContent += `Error: ${error.message}\n`;
-        output.textContent += `\nCheck Zoho Flow anyway - data might have been sent!`;
-      }
-    }
-
-    async function test3() {
-      output.textContent = 'Test 3: Sending with mode: no-cors (old way)...\n';
-      
-      const data = {
-        test: 'test3',
-        name: 'Farhan',
-        email: 'test@example.com',
-        timestamp: new Date().toISOString()
-      };
-
-      try {
-        const response = await fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        });
-
-        output.textContent += `✓ Request sent\n`;
-        output.textContent += `Response type: ${response.type}\n`;
-        output.textContent += `\nData sent:\n${JSON.stringify(data, null, 2)}\n`;
-        output.textContent += `\nCheck Zoho Flow now!`;
-      } catch (error) {
-        output.textContent += `Error: ${error.message}\n`;
-      }
-    }
-  </script>
+    </script>
 </body>
 </html>
