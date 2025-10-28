@@ -172,10 +172,11 @@
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(testData),
-          mode: 'no-cors'
+          body: JSON.stringify(testData)
         });
 
+        console.log('Response status:', response.status);
+        
         result.className = 'success';
         result.innerHTML = `
           <h3>✅ Test Data Sent Successfully!</h3>
