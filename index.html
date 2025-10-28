@@ -199,8 +199,15 @@
 
 <script>
 function openForm() {
-    document.getElementById('formModal').style.display = 'flex';
+    const modal = document.getElementById('formModal');
+    modal.style.display = 'flex';
+
+    // Scroll smoothly to form popup
+    setTimeout(() => {
+        modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
 }
+
 function closeForm() {
     document.getElementById('formModal').style.display = 'none';
 }
