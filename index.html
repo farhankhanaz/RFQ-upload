@@ -20,26 +20,80 @@
     .btn-secondary:hover { border-color: #0066ff; color: #0066ff; }
 
     /* How it works */
-    .how-it-works { padding: 80px 0; background: #f8f9fa; }
-    .section-header { text-align: center; margin-bottom: 64px; }
-    .section-header h2 { font-size: 48px; font-weight: 700; margin-bottom: 16px; }
-    .section-header p { font-size: 18px; color: #666; max-width: 600px; margin: 0 auto; }
-    .flow-steps {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 32px; margin-top: 48px;
-    }
-    .step-card {
-        background: white; padding: 32px; border-radius: 12px; border: 1px solid #e5e5e5;
-        transition: all 0.3s; text-align: left;
-    }
-    .step-card:hover { border-color: #0066ff; box-shadow: 0 8px 24px rgba(0,0,0,0.06); transform: translateY(-4px); }
-    .step-number {
-        width: 48px; height: 48px; background: #0066ff; color: white; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 20px;
-    }
-    .step-card h3 { font-size: 20px; margin-bottom: 12px; color: #1a1a1a; }
-    .step-card p { color: #666; font-size: 15px; line-height: 1.6; }
-    .step-tag { display: inline-block; margin-top: 12px; padding: 4px 12px; background: #e8f4ff; color: #0066ff; border-radius: 4px; font-size: 13px; }
+    <!-- How It Works -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2>How it works</h2>
+      <p>Five simple steps from BOM upload to production-ready quote</p>
+    </div>
+
+    <div class="flow-steps-inline">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Upload BOM</h3>
+        <p>Drop your CSV or Excel file. We auto-detect columns instantly.</p>
+        <span class="step-tag">Auto-mapping</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Parts Pricing</h3>
+        <p>Live distributor pricing with real-time availability checks.</p>
+        <span class="step-tag">20+ distributors</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Assembly Config</h3>
+        <p>Auto-calculated SMT/THT costs based on your component counts.</p>
+        <span class="step-tag">Instant estimates</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3>Review Quote</h3>
+        <p>Firm pricing breakdown with sensitivity ranges and lead times.</p>
+        <span class="step-tag">Transparent</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">5</div>
+        <h3>Download PDF</h3>
+        <p>Get your quote instantly via email and reserve your production slot.</p>
+        <span class="step-tag">Instant delivery</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.flow-steps-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 24px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 16px;
+}
+.flow-steps-inline .step-card {
+  flex: 1;
+  min-width: 220px;
+  max-width: 250px;
+  scroll-snap-align: start;
+}
+@media (max-width: 900px) {
+  .flow-steps-inline {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-steps-inline .step-card {
+    max-width: 100%;
+  }
+}
+</style>
 
     /* Features */
     .features { padding: 80px 0; }
