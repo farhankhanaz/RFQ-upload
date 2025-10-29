@@ -86,13 +86,6 @@
         }
         .feature h3 { font-size: 20px; margin-bottom: 12px; font-weight: 700; color: #1a1a1a; }
         .feature p { color: #666; font-size: 15px; line-height: 1.6; }
-        .badge-group { display: flex; gap: 8px; margin-top: 12px; }
-        .badge {
-            padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;
-        }
-        .badge-green { background: #d1fae5; color: #065f46; }
-        .badge-amber { background: #fef3c7; color: #92400e; }
-        .badge-red { background: #fee2e2; color: #991b1b; }
 
         /* Stats */
         .stats {
@@ -116,7 +109,9 @@
         #formModal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; transform: scale(0.9); transition: all 0.4s ease-in-out;
         }
+        #formModal.show { opacity: 1; transform: scale(1); }
         .form-content {
             background: #fff; border-radius: 12px; width: 90%; max-width: 800px;
             padding: 24px; position: relative;
@@ -158,24 +153,6 @@
   </div>
 </section>
 
-<!-- Features -->
-<section class="features" id="features">
-    <div class="container">
-        <div class="section-header">
-            <h2>Built for speed and accuracy</h2>
-            <p>Everything you need for transparent, production-ready electronics quotes</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature"><div class="feature-icon">✓</div><h3>Smart Coverage Analysis</h3><p>Visual breakdown of priced, alternate, and manual-quote parts with real-time inventory data.</p><div class="badge-group"><span class="badge badge-green">Priced</span><span class="badge badge-amber">Alternate</span><span class="badge badge-red">Manual</span></div></div>
-            <div class="feature"><div class="feature-icon">⚡</div><h3>Lightning-Fast Parsing</h3><p>Auto-detect BOM columns, validate data, and start pricing in seconds—no manual mapping required.</p></div>
-            <div class="feature"><div class="feature-icon">📊</div><h3>Assembly Cost Automation</h3><p>Instant SMT/THT placement costs, stencil setup, and testing estimates based on component counts.</p></div>
-            <div class="feature"><div class="feature-icon">💰</div><h3>Sensitivity Ranges</h3><p>Transparent ±5% pricing bands to account for sourcing variations and final PCB cost adjustments.</p></div>
-            <div class="feature"><div class="feature-icon">📄</div><h3>PDF Delivery</h3><p>Professional quote documents sent to your inbox instantly—ready to share with your team or stakeholders.</p></div>
-            <div class="feature"><div class="feature-icon">🔒</div><h3>Slot Reservation</h3><p>Lock in your production timeline and lead times directly from the quote interface—no phone calls needed.</p></div>
-        </div>
-    </div>
-</section>
-
 <!-- Stats -->
 <section class="stats">
     <div class="container">
@@ -209,28 +186,25 @@
 <script>
 function openForm() {
     const modal = document.getElementById('formModal');
+    modal.classList.add('show');
     modal.style.display = 'flex';
 
     // Disable background scroll
     document.body.style.overflow = 'hidden';
 
-    // ✅ Cross-device scroll handling
+    // Ensure popup scrolls fully into view on mobile
     setTimeout(() => {
         modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // Fallback for mobile browsers (iOS/Android)
         if (/Mobi|Android/i.test(navigator.userAgent)) {
-            window.scrollTo({
-                top: modal.offsetTop - 50,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: modal.offsetTop - 150, behavior: 'smooth' });
         }
     }, 200);
 }
 
 function closeForm() {
     const modal = document.getElementById('formModal');
-    modal.style.display = 'none';
+    modal.classList.remove('show');
+    setTimeout(() => modal.style.display = 'none', 300);
     document.body.style.overflow = '';
 }
 </script>
