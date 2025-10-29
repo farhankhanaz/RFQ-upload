@@ -15,8 +15,11 @@
 
   /* Hero Section */
   .hero { padding: 120px 0 80px; text-align: center; }
-  .hero h1 { font-size: 64px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.02em; }
-  .hero .highlight { color: #0066ff; }
+  .hero h1 { 
+    font-size: 64px; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.02em;
+  }
+  .hero .highlight-orange { color: #ff6a00; } /* Orange like "Get in Touch" */
+  .hero .highlight-blue { color: #00a8ff; } /* Blue like "From Chaos to Control" */
   .hero p { font-size: 20px; color: #666; max-width: 640px; margin: 0 auto 40px; line-height: 1.6; }
 
   .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
@@ -24,10 +27,14 @@
     padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600;
     cursor: pointer; border: none; transition: all 0.2s;
   }
-  .btn-primary { background: #0066ff; color: white; }
-  .btn-primary:hover { background: #0052cc; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,102,255,0.3); }
-  .btn-secondary { background: white; color: #666; border: 1px solid #e5e5e5; }
-  .btn-secondary:hover { border-color: #0066ff; color: #0066ff; }
+  .btn-primary {
+    background: #ff6a00; color: white;
+  }
+  .btn-primary:hover {
+    background: #e65c00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255,106,0,0.3);
+  }
 
   /* Popup Modal */
   #formModal {
@@ -58,7 +65,7 @@
   }
 
   @media (max-width: 768px) {
-    .hero h1 { font-size: 42px; }
+    .hero h1 { font-size: 42px; line-height: 1.3; }
     .hero p { font-size: 18px; }
     .form-content { width: 95%; height: 95vh; padding: 16px; }
   }
@@ -69,11 +76,10 @@
 <!-- Hero Section -->
 <section class="hero">
   <div class="container">
-    <h1>Get your PCB assembly quote <span class="highlight">in minutes,<br>not days</span></h1>
+    <h1><span class="highlight-orange">Get your PCB assembly quote</span> <span class="highlight-blue">in minutes,<br>not days</span></h1>
     <p>Upload your BOM. Get instant parts pricing, assembly cost estimates, and coverage insights—no back-and-forth emails required.</p>
     <div class="cta-group">
       <button onclick="openForm()" class="btn btn-primary">Upload BOM & Get Quote</button>
-      <a href="#how-it-works" class="btn btn-secondary">See how it works ↓</a>
     </div>
   </div>
 </section>
@@ -81,7 +87,7 @@
 <!-- Popup Zoho Form -->
 <div id="formModal">
   <div class="form-content">
-    <span class="close-btn" onclick="closeForm()">×</span>
+    <span class="close-btn" onclick="closeForm()">&times;</span>
     <iframe aria-label='Upload BOM and Get Quote'
       src='https://forms.zohopublic.com/summonelectronics/form/CustomerSatisfactionForm/formperma/VXlhO_SNgzc20I4aVQ1uG7CUFy9av4VRNV3mKyJh3FI'>
     </iframe>
@@ -93,7 +99,7 @@ function openForm() {
   const modal = document.getElementById('formModal');
   modal.style.display = 'flex';
 
-  // Ensure it scrolls into view (desktop + mobile)
+  // Scroll smoothly to popup center (works mobile + desktop)
   setTimeout(() => {
     modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 150);
